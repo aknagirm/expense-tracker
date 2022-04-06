@@ -7,7 +7,7 @@ const path = require("path");
 const route = require("./route");
 require("dotenv").config();
 
-const PORT = process.env.SERVER_PORT;
+const PORT = process.env.SERVER_PORT || 3000;
 const expenseTrackerDb = process.env.MONGOOSE_CONNECTION;
 
 const app = express();
@@ -29,10 +29,10 @@ mongoose.connect(
 
 app.use("/route", route);
 
-app.use(express.static("public"));
+/* app.use(express.static("public"));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
-});
+}); */
 app.get("/", (req, res) => {
   res.status(200).send("Hello from server");
 });
