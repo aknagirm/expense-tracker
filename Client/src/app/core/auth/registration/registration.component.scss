@@ -1,0 +1,48 @@
+.registration {
+  padding: 0px 15px 10px 15px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.password-tooltip {
+  font-size: 14px;
+}
+
+.email-field-hint {
+  font-size: 11px;
+  a {
+    cursor: pointer;
+    color: #0277bd;
+  }
+}
+
+#otp-mail {
+  display: block;
+  border: none;
+  padding: 0;
+  width: 9ch;
+  background: repeating-linear-gradient(
+      90deg,
+      dimgrey 0,
+      dimgrey 1ch,
+      transparent 0,
+      transparent 1.5ch
+    )
+    0 100%/8.5ch 2px no-repeat;
+  font: 5ch droid sans mono, consolas, monospace;
+  letter-spacing: 0.5ch;
+}
+
+#otp-mail:focus:focus {
+  outline: none;
+  color: dodgerblue;
+}
+
+.submit-btn-container {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+}

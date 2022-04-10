@@ -1,0 +1,42 @@
+<div class="container-fluid px-0">
+  <!-- <div class="row">
+          <ng-container *ngFor="let eachSection of sectionList;let i =index">
+              <div class="col-3">
+                  <div attr.id="sectionIcons_{{i}}" [ngClass]="eachSection.value" class="section-container"></div>
+                  <label for="sectionIcons_{{i}}">{{eachSection.label}}</label>
+              </div>
+          </ng-container>
+      </div> -->
+
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel
+      hideToggle
+      *ngFor="let eachSection of sectionList; let i = index"
+      #expansionPanel
+    >
+      <mat-expansion-panel-header class="row px-0">
+        <mat-panel-title class="col-10">
+          <mat-icon> star_border </mat-icon>
+          <label class="mx-3" for="sectionIcons_{{ i }}">{{
+            eachSection.label
+          }}</label>
+        </mat-panel-title>
+        <mat-panel-description class="col-1">
+          <mat-icon *ngIf="!expansionPanel.expanded"
+            >add_circle_outline</mat-icon
+          >
+          <mat-icon *ngIf="expansionPanel.expanded"
+            >remove_circle_outline</mat-icon
+          >
+          <mat-icon
+            *ngIf="expansionPanel.expanded"
+            class="mx-2"
+            (click)="saveTransaction(eachSection)"
+            >check_circle</mat-icon
+          >
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-input-details #inputDetails></app-input-details>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

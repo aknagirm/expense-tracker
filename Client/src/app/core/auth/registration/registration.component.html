@@ -1,0 +1,241 @@
+<div
+  class="container registration"
+  style="box-sizing: border-box"
+  *ngIf="registrationFrom"
+>
+  <!--  <p-toast position="center" key="studentRegister"></p-toast> -->
+  <div class="row mx-3 mt-4">
+    <div class="col-12 form-container px-0">
+      <form [formGroup]="registrationFrom">
+        <div class="row my-2">
+          <mat-form-field class="col-6">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" />
+            <mat-error
+              *ngIf="
+                registrationFrom.controls.firstName.touched &&
+                registrationFrom.controls.firstName.hasError('required')
+              "
+            >
+              Field is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-6">
+            <mat-label>last Name</mat-label>
+            <input matInput name="lastName" formControlName="lastName" />
+            <mat-error
+              *ngIf="
+                registrationFrom.controls.lastName.touched &&
+                registrationFrom.controls.lastName.hasError('required')
+              "
+            >
+              Field is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row my-2">
+          <mat-form-field class="col-12">
+            <mat-label>Email Id</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="emailId"
+              placeholder="test@test.com"
+            />
+            <mat-hint
+              class="email-field-hint"
+              *ngIf="
+                registrationFrom.controls.emailId.touched &&
+                registrationFrom.controls.emailId.valid &&
+                mailVerified != 'matched'
+              "
+            >
+              Email Id needs to be verified!
+              <a (click)="mailOtpGenerate()">verify</a>
+            </mat-hint>
+            <mat-hint *ngIf="mailVerified == 'matched'" class="text-success"
+              >Email Id verified!</mat-hint
+            >
+            <mat-error
+              *ngIf="
+                registrationFrom.controls.emailId.touched &&
+                registrationFrom.controls.emailId.hasError('required')
+              "
+            >
+              Field is required
+            </mat-error>
+            <mat-error
+              *ngIf="
+                registrationFrom.controls.emailId.touched &&
+                registrationFrom.controls.emailId.hasError('email')
+              "
+            >
+              Field is invalid
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row my-2">
+          <mat-form-field class="col-6">
+            <mat-label>Enter your password</mat-label>
+            <input
+              matInput
+              [type]="hide1 ? 'password' : 'text'"
+              name="passWord"
+              formControlName="passWord"
+            />
+
+            <button mat-icon-button matSuffix (click)="hide1 = !hide1">
+              <mat-icon>{{ hide1 ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <mat-hint class="password-tooltip">
+              <mat-icon
+                #tooltip="matTooltip"
+                matTooltip="Password length must be 8 Character, 
+              must contains atleast one Capital Letter, one small Letter and one Number"
+                matTooltipPosition="right"
+              >
+                help_outline</mat-icon
+              >
+            </mat-hint>
+            <mat-error
+              *ngIf="
+                registrationFrom.controls.passWord.touched &&
+                registrationFrom.controls.passWord.hasError('required')
+              "
+            >
+              Field is required
+            </mat-error>
+            <mat-error
+              *ngIf="
+                registrationFrom.controls.passWord.touched &&
+                registrationFrom.controls.passWord.hasError('pattern')
+              "
+            >
+              Field is invalid
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+            class="col-6"
+            [class.mat-form-field-invalid]="
+              registrationFrom.controls.passWord.value !==
+                registrationFrom.controls.passWordConf.value &&
+              registrationFrom.controls.passWordConf.touched
+            "
+          >
+            <mat-label>Re enter your password</mat-label>
+            <input
+              matInput
+              [type]="hide2 ? 'password' : 'text'"
+              name="passWordConf"
+              formControlName="passWordConf"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide2 = !hide2"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide2"
+            >
+              <mat-icon>{{ hide2 ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <mat-hint
+              class="text-danger"
+              *ngIf="
+                registrationFrom.controls.passWord.value !==
+                  registrationFrom.controls.passWordConf.value &&
+                registrationFrom.controls.passWordConf.touched
+              "
+            >
+              Password didnot match
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="row border mx-0 mt-3" *ngIf="verifyMailOpen">
+          <div class="form-group col-10 mx-auto mb-0" style="margin-top: 15px">
+            <div class="col-12" style="text-align: center; font-size: 20px">
+              <p *ngIf="mailVerified == 'matched'">
+                <i class="fa fa-check-square-o" style="color: green"></i> Email
+                id has been verified
+              </p>
+              <p *ngIf="mailVerified == 'not matched'">
+                <i class="fa fa-close" style="color: red"></i> otp not matched
+              </p>
+              <p *ngIf="mailVerified == 'no mail'">
+                <i class="fa fa-close" style="color: red"></i> Email id not
+                found
+              </p>
+              <p *ngIf="mailVerified == 'user exist'">
+                <i class="fa fa-close" style="color: red"></i> Email id already
+                registered
+              </p>
+              <p *ngIf="mailVerified == 'expired'">
+                <i class="fa fa-close" style="color: red"></i> OTP Expired,
+                Please retry
+              </p>
+            </div>
+
+            <div *ngIf="mailVerified != 'matched'">
+              <label for="otp-mail"
+                >Please enter the <strong>OTP</strong> sent to your email id for
+                verification</label
+              >
+              <div class="input-group">
+                <input
+                  id="otp-mail"
+                  type="text"
+                  class="mx-auto"
+                  name="otp-mail"
+                  placeholder="000000"
+                  required
+                  #otpInput
+                />
+              </div>
+              <button
+                type="button"
+                (click)="verifyMail()"
+                class="col-12 btn btn-default btn-primary mt-3"
+              >
+                verify
+              </button>
+              <div class="row">
+                <a class="col-5" (click)="mailOtpGenerate()">Resend OTP</a>
+                <p class="col-7 px-0">
+                  Remaining time: <strong>{{ myMailTimer }} Min</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+          <button
+            class="col-3 btn btn-success"
+            (click)="registrationSubmit()"
+            [disabled]="
+              registrationFrom.status != 'VALID' ||
+              registrationFrom.controls.passWord.value !==
+                registrationFrom.controls.passWordConf.value ||
+              mailVerified != 'matched'
+            "
+          >
+            Submit
+          </button>
+          <div
+            class="col-12 text-bottom mx-auto mt-2"
+            style="text-align: center"
+          >
+            <p>
+              Already have an acount?
+              <a routerLink="/login">Login</a>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

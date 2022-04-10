@@ -1,0 +1,22 @@
+.login-container {
+  padding: 0px 15px 10px 15px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-btn-container {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+}
+
+.text-bottom {
+  text-align: center;
+  a {
+    cursor: pointer;
+    color: #0277bd;
+  }
+}

@@ -1,0 +1,80 @@
+<div class="container-fluid px-0">
+  <form [formGroup]="incomeDetailsForm">
+    <div class="row">
+      <div class="col-9">
+        <mat-form-field class="note-text-field" appearance="fill">
+          <mat-label>Add Note</mat-label>
+          <input
+            type="text"
+            matInput
+            name="note"
+            placeholder="Ex. Salary credited"
+            formControlName="note"
+          />
+          <!-- [errorStateMatcher]="matcher" -->
+        </mat-form-field>
+      </div>
+      <div class="col-3">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          class="hidden-elem"
+          (dateChange)="changeDate($event)"
+        />
+        <mat-datepicker #picker></mat-datepicker>
+        <span (click)="picker.open()">{{ selectedDate | date: "EEEE" }}</span>
+        <br />
+        <span (click)="picker.open()">{{
+          selectedDate | date: "dd/MM/yyyy"
+        }}</span>
+        <br />
+        <span (click)="picker.open()">{{ daysDiff }}</span>
+      </div>
+    </div>
+
+    <div class="input-number-table-container">
+      <table class="row">
+        <tr>
+          <input
+            type="text"
+            [disabled]="true"
+            class="amount-input-field py-2 border-2 px-2 col-9"
+            name="transAmount"
+            formControlName="transAmount"
+          />
+          <button
+            class="col-3 py-2"
+            (click)="amountInputBtnClick('result')"
+            style="color: blue"
+          >
+            =
+          </button>
+        </tr>
+        <tr
+          *ngFor="
+            let eachRow of [
+              [7, 8, 9, '+'],
+              [4, 5, 6, '-'],
+              [1, 2, 3, '*'],
+              ['.', 0, 'x', '/']
+            ]
+          "
+        >
+          <button
+            class="col-3 py-2"
+            *ngFor="let eachValue of eachRow"
+            (click)="amountInputBtnClick(eachValue)"
+            [style.color]="eachValue !== 'x' ? 'black' : 'red'"
+          >
+            <ng-container *ngIf="eachValue !== 'x'">
+              {{ eachValue }}
+            </ng-container>
+            <ng-container *ngIf="eachValue == 'x'">
+              <mat-icon>backspace</mat-icon>
+            </ng-container>
+          </button>
+        </tr>
+      </table>
+    </div>
+  </form>
+</div>
