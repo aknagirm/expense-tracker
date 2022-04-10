@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
+
 @NgModule({
   declarations: [InputDetailsComponent, SnackBarComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -29,6 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatMenuModule,
   ],
   exports: [
     MatTabsModule,
@@ -43,6 +46,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatButtonModule,
     MatSnackBarModule,
     SnackBarComponent,
+    MatMenuModule,
   ],
 })
 export class ReusableModule {}
