@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import {
   AlertObjectModel,
   creditDebitIndType,
+  MonthRange,
   SectionDetailsModel,
   TransDetails,
   UserDetails,
@@ -37,6 +38,12 @@ export class TrackerDetailsService {
 
   getSectionDetails(): Observable<SectionDetailsModel[]> {
     return this.sectionDetails.asObservable();
+  }
+
+  getDateRange(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.environment.baseUrl}${this.environment.servlet_endpoint.getDateRange}`
+    );
   }
 
   getIncomeDetailsSection() {
@@ -96,6 +103,13 @@ export class TrackerDetailsService {
       this.showError(errorMsg);
       return of(new Error(errorMsg));
     }
+  }
+
+  getTransaction(monthRange: MonthRange): Observable<any> {
+    return this.http.post(
+      `${this.environment.baseUrl}${this.environment.servlet_endpoint.getTransaction}`,
+      monthRange
+    );
   }
 
   showError(errorMsg: string) {

@@ -1,5 +1,9 @@
-export type messageType = "error" | "success" | "info" | "warning";
-export type creditDebitIndType = "C" | "D";
+export type messageType = 'error' | 'success' | 'info' | 'warning';
+export type creditDebitIndType = 'C' | 'D';
+
+export interface MonthRange {
+  monthRange: number;
+}
 
 export interface AlertObjectModel {
   alertMessage: string;

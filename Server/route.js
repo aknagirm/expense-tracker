@@ -2,7 +2,7 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 
-const sectionModel = require("./models/section-model");
+const { sectionModel, dateRangeModel } = require("./models/section-model");
 const User = require("./models/user-model");
 const verifyRequest = require("./verify-token");
 
@@ -147,6 +147,48 @@ route.post("/saveTransaction", verifyRequest, async (req, res) => {
     }
   } catch (err) {
     res.status(404).send({ msg: "User not found" });
+  }
+});
+
+route.post("/getTransaction", verifyRequest, async (req, res) => {
+  try {
+    let email = req.emailId ? req.emailId : null;
+    if (!email) {
+      throw err;
+    } else {
+      let dt1 = new Date();
+      let endDt = new Date();
+      let monthRange = req.body.monthRange ?? 6;
+      let startDt = new Date(
+        new Date(dt1.setMonth(dt1.getMonth() - monthRange + 1)).setDate(1)
+      );
+      let userDetails = await User.findOne({
+        emailId: email,
+      }).exec();
+      const transListAll = userDetails.transactions;
+      let transList = [];
+      for (let i = 0; i < transListAll.length; i++) {
+        if (
+          startDt.getTime() <=
+          transListAll[i].transDate.getTime() <=
+          endDt.getTime()
+        ) {
+          transList.push(transListAll[i]);
+        }
+      }
+      res.status(200).send(transList);
+    }
+  } catch (err) {
+    res.status(500).send({ msg: "Something is wrong" });
+  }
+});
+
+route.get("/getDateRange", async (req, res) => {
+  try {
+    const dateRangeData = dateRangeModel.find({}).exec();
+    res.status(200).send(dateRangeData);
+  } catch (err) {
+    res.status(500).send({ msg: "Something is wrong" });
   }
 });
 

@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const transactionsSchema = new Schema({
+/* const transactionsSchema = new Schema({
   creationDate: Date,
   transDate: Date,
   creditDebitInd: String,
   sectionValue: String,
   transAmount: String,
   note: String,
-});
+}); */
 
 const userModel = new Schema({
   creationDate: Date,
@@ -17,7 +17,15 @@ const userModel = new Schema({
   lastName: String,
   emailId: String,
   passWord: String,
-  transactions: [transactionsSchema],
+  transactions: [
+    {
+      transDate: Date,
+      creditDebitInd: String,
+      sectionValue: String,
+      transAmount: String,
+      note: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model("userDetails", userModel, "userDetails");

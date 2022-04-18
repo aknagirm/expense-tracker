@@ -18,4 +18,8 @@ export class AddDetailsComponent implements OnInit {
       this.router.navigate(['login']);
     }
   }
+
+  viewAnalysisCheck() {
+    this.router.navigate(['viewAnalysis']);
+  }
 }
