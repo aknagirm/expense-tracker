@@ -9,5 +9,7 @@ export const environment = {
     login: 'route/login',
     getUserDetails: 'route/getUserDetails',
     saveTransaction: 'route/saveTransaction',
+    getDateRange: 'route/getDateRange',
+    getTransaction: 'route/getTransaction',
   },
 };
