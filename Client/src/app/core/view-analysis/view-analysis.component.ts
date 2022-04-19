@@ -135,7 +135,9 @@ export class ViewAnalysisComponent implements OnInit {
           },
         },
         onClick: (evt, activeElements, chart) => {
-          this.monthCLickOnLineGraph(activeElements[0].index);
+          if (activeElements[0] !== undefined) {
+            this.monthCLickOnLineGraph(activeElements[0]?.index);
+          }
         },
       },
     });
