@@ -11,25 +11,25 @@ export interface AlertObjectModel {
 }
 
 export interface SectionDetailsModel {
-  label?: String;
-  value?: String;
-  cdInd?: String;
+  label?: string;
+  value?: string;
+  cdInd?: string;
 }
 
 export interface TransDetails {
   creationDate?: Date;
   transDate: Date;
-  creditDebitInd: String;
-  sectionValue: String;
-  transAmount: String;
-  note: String;
+  creditDebitInd: string;
+  sectionValue: string;
+  transAmount: string;
+  note: string;
 }
 
 export interface UserDetails {
   creationDate?: Date;
-  firstName?: String;
-  lastName?: String;
-  emailId?: String;
-  passWord?: String;
+  firstName?: string;
+  lastName?: string;
+  emailId?: string;
+  passWord?: string;
   transactions?: TransDetails[];
 }

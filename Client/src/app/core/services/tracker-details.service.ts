@@ -21,7 +21,8 @@ import { SnackBarComponent } from '../Reusable/snack-bar/snack-bar.component';
   providedIn: 'root',
 })
 export class TrackerDetailsService {
-  sectionDetails = new Subject<SectionDetailsModel[]>();
+  sectionDetails$ = new Subject<SectionDetailsModel[]>();
+  sectionDetails: SectionDetailsModel[] = [];
   alertSubject = new Subject<AlertObjectModel>();
   environment = environment.environment;
 
@@ -37,7 +38,7 @@ export class TrackerDetailsService {
   }
 
   getSectionDetails(): Observable<SectionDetailsModel[]> {
-    return this.sectionDetails.asObservable();
+    return this.sectionDetails$.asObservable();
   }
 
   getDateRange(): Observable<any[]> {
@@ -52,7 +53,8 @@ export class TrackerDetailsService {
         `${this.environment.baseUrl}${this.environment.servlet_endpoint.getAllSection}`
       )
       .subscribe((sectionList: SectionDetailsModel[]) => {
-        this.sectionDetails.next(sectionList);
+        this.sectionDetails = sectionList;
+        this.sectionDetails$.next(sectionList);
       });
   }
 
@@ -105,8 +107,8 @@ export class TrackerDetailsService {
     }
   }
 
-  getTransaction(monthRange: MonthRange): Observable<any> {
-    return this.http.post(
+  getTransaction(monthRange: MonthRange): Observable<TransDetails[]> {
+    return this.http.post<TransDetails[]>(
       `${this.environment.baseUrl}${this.environment.servlet_endpoint.getTransaction}`,
       monthRange
     );
