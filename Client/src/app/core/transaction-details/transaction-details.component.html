@@ -1,0 +1,46 @@
+<div class="container-fluid transaction-details-container">
+  <div class="row mt-1">
+    <div class="col-6">
+      <mat-form-field class="example-full-width">
+        <mat-label>Search text</mat-label>
+        <input matInput placeholder="Ex. Garage rent" #searchInput />
+      </mat-form-field>
+    </div>
+  </div>
+  <hr class="my-0" />
+  <div *ngFor="let eachTrx of allTransactionDetails">
+    <div class="row">
+      <div class="col-8">
+        <p class="note">{{ eachTrx.note }}</p>
+        <small>{{ eachTrx.sectionValue }}</small>
+      </div>
+      <div class="col-4 text-float-right">
+        <strong
+          [style.color]="eachTrx.creditDebitInd == 'C' ? 'green' : 'red'"
+          id="trx-amt"
+          >&#8377;{{ eachTrx.transAmount }}</strong
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <p>
+          Trx. On: <strong>{{ eachTrx.transDate | date: "d/M/yy" }}</strong>
+        </p>
+      </div>
+      <div class="col-4 px-0 text-float-center">
+        <p>
+          Entry On:
+          <strong>{{ eachTrx.creationDate | date: "d/M/yy" }}</strong>
+        </p>
+      </div>
+      <div class="col-4 text-float-right">
+        <p>
+          Blnc:
+          <strong class="curr-balance">&#8377;{{ eachTrx.currBalance }}</strong>
+        </p>
+      </div>
+    </div>
+    <hr class="dotted-underline my-2" />
+  </div>
+</div>

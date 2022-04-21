@@ -1,6 +1,10 @@
 export type messageType = 'error' | 'success' | 'info' | 'warning';
 export type creditDebitIndType = 'C' | 'D';
 
+export interface DateRangeModel {
+  dateRange: Number;
+}
+
 export interface MonthRange {
   monthRange: number;
 }
@@ -23,6 +27,10 @@ export interface TransDetails {
   sectionValue: string;
   transAmount: string;
   note: string;
+}
+
+export interface TransDetailsWithBlnc extends TransDetails {
+  currBalance?: number;
 }
 
 export interface UserDetails {

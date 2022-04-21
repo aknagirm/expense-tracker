@@ -15,6 +15,7 @@ import { AuthModule } from './core/auth/auth.module';
 import { interceptorProviders } from './interceptor/interceptor';
 import { ExpenseDetailsSectionsComponent } from './core/expense-details-sections/expense-details-sections.component';
 import { ViewAnalysisComponent } from './core/view-analysis/view-analysis.component';
+import { TransactionDetailsComponent } from './core/transaction-details/transaction-details.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ViewAnalysisComponent } from './core/view-analysis/view-analysis.compon
     IncomeDetailsSectionsComponent,
     ExpenseDetailsSectionsComponent,
     ViewAnalysisComponent,
+    TransactionDetailsComponent,
   ],
   imports: [
     BrowserModule,

@@ -13,9 +13,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarComponent } from './snack-bar/snack-bar.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { MatRadioModule } from '@angular/material/radio';
+import { HeaderComponent } from './header/header.component';
+import { PortalModule } from '@angular/cdk/portal';
 @NgModule({
-  declarations: [InputDetailsComponent, SnackBarComponent],
+  declarations: [InputDetailsComponent, SnackBarComponent, HeaderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
@@ -32,12 +34,15 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonModule,
     MatSnackBarModule,
     MatMenuModule,
+    MatRadioModule,
+    PortalModule,
   ],
   exports: [
     MatTabsModule,
     MatExpansionModule,
     MatIconModule,
     InputDetailsComponent,
+    HeaderComponent,
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
@@ -47,6 +52,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSnackBarModule,
     SnackBarComponent,
     MatMenuModule,
+    MatRadioModule,
   ],
 })
 export class ReusableModule {}

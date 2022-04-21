@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import {
   AlertObjectModel,
   creditDebitIndType,
+  DateRangeModel,
   MonthRange,
   SectionDetailsModel,
   TransDetails,
@@ -25,11 +26,37 @@ export class TrackerDetailsService {
   sectionDetails: SectionDetailsModel[] = [];
   alertSubject = new Subject<AlertObjectModel>();
   environment = environment.environment;
+  headerTitle$ = new Subject<string>();
+  monthRangeChange$ = new BehaviorSubject<number>(3);
+  newMonthSelected$ = new BehaviorSubject<Date>(new Date());
 
   constructor(private http: HttpClient, private matSnackBar: MatSnackBar) {}
 
+  setNewMonthSelected(newMonth: Date) {
+    this.newMonthSelected$.next(newMonth);
+  }
+
+  getNewMonthSelected(): Observable<Date> {
+    return this.newMonthSelected$.asObservable();
+  }
+
+  setNewMonthRange(newMonthRange: number) {
+    this.monthRangeChange$.next(newMonthRange);
+  }
+
+  getNewMonthRange(): Observable<number> {
+    return this.monthRangeChange$.asObservable();
+  }
+
+  setHeaderTitle(title: string) {
+    this.headerTitle$.next(title);
+  }
+
+  getHeaderTitle(): Observable<string> {
+    return this.headerTitle$.asObservable();
+  }
+
   setAlert(newAlert: AlertObjectModel) {
-    console.log(newAlert);
     this.alertSubject.next(newAlert);
   }
 
@@ -41,8 +68,8 @@ export class TrackerDetailsService {
     return this.sectionDetails$.asObservable();
   }
 
-  getDateRange(): Observable<any[]> {
-    return this.http.get<any[]>(
+  getDateRange(): Observable<DateRangeModel[]> {
+    return this.http.get<DateRangeModel[]>(
       `${this.environment.baseUrl}${this.environment.servlet_endpoint.getDateRange}`
     );
   }
@@ -107,10 +134,10 @@ export class TrackerDetailsService {
     }
   }
 
-  getTransaction(monthRange: MonthRange): Observable<TransDetails[]> {
+  getTransaction(startDate: Date, endDate: Date): Observable<TransDetails[]> {
     return this.http.post<TransDetails[]>(
       `${this.environment.baseUrl}${this.environment.servlet_endpoint.getTransaction}`,
-      monthRange
+      { startDt: startDate, endDt: endDate }
     );
   }
 

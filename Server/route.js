@@ -156,12 +156,8 @@ route.post("/getTransaction", verifyRequest, async (req, res) => {
     if (!email) {
       throw err;
     } else {
-      let dt1 = new Date();
-      let endDt = new Date();
-      let monthRange = req.body.monthRange ?? 6;
-      let startDt = new Date(
-        new Date(dt1.setMonth(dt1.getMonth() - monthRange + 1)).setDate(1)
-      );
+      let endDt = new Date(req.body.endDt);
+      let startDt = new Date(req.body.startDt);
       let userDetails = await User.findOne({
         emailId: email,
       }).exec();
@@ -169,9 +165,8 @@ route.post("/getTransaction", verifyRequest, async (req, res) => {
       let transList = [];
       for (let i = 0; i < transListAll.length; i++) {
         if (
-          startDt.getTime() <=
-          transListAll[i].transDate.getTime() <=
-          endDt.getTime()
+          startDt.getTime() <= transListAll[i].transDate.getTime() &&
+          transListAll[i].transDate.getTime() <= endDt.getTime()
         ) {
           transList.push(transListAll[i]);
         }
@@ -185,7 +180,7 @@ route.post("/getTransaction", verifyRequest, async (req, res) => {
 
 route.get("/getDateRange", async (req, res) => {
   try {
-    const dateRangeData = dateRangeModel.find({}).exec();
+    const dateRangeData = await dateRangeModel.find({}).exec();
     res.status(200).send(dateRangeData);
   } catch (err) {
     res.status(500).send({ msg: "Something is wrong" });

@@ -10,7 +10,8 @@ import Chart from 'chart.js/auto';
 import { TrackerDetailsService } from '../services/tracker-details.service';
 import { DatePipe } from '@angular/common';
 import { cloneDeep } from 'lodash';
-import { TransDetails } from 'src/app/interfaces/model';
+import { DateRangeModel, TransDetails } from 'src/app/interfaces/model';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-view-analysis',
@@ -20,22 +21,52 @@ import { TransDetails } from 'src/app/interfaces/model';
 export class ViewAnalysisComponent implements OnInit {
   @ViewChild('lineChartLoc') lineChartLoc: ElementRef;
   @ViewChild('pieChartLoc') pieChartLoc: ElementRef;
-  range: number = 6;
+
   _selectedTheme = 'light-theme';
-  monthRange: any[];
+  monthRange: DateRangeModel[];
   allTransactionDetails: TransDetails[];
   monthlyTotalExpenses = {};
   monthlyExpensesChart: Chart<'line', unknown[], string>;
   sectionExpensesChart: Chart<'pie', unknown[], string>;
   datePipe: DatePipe = new DatePipe('en-US');
+  range: number;
 
   constructor(private trackerDetailsService: TrackerDetailsService) {}
 
   ngOnInit(): void {
-    this.trackerDetailsService.getDateRange().subscribe((data) => {
-      this.monthRange = data;
-    });
-    this.getTransaction();
+    this.trackerDetailsService
+      .getNewMonthRange()
+      .subscribe((monthRange: number) => {
+        this.monthlyExpensesChart?.destroy();
+        this.sectionExpensesChart?.destroy();
+        this.getTransaction(monthRange);
+      });
+  }
+
+  getTransaction(dateRange: number) {
+    this.range = dateRange;
+    this.trackerDetailsService.setHeaderTitle(
+      `Last ${dateRange} Months Analysis`
+    );
+    const endDt = new Date();
+    const dt1 = new Date();
+    const startDt = new Date(
+      new Date(dt1.setMonth(dt1.getMonth() - dateRange)).setDate(1)
+    );
+    this.trackerDetailsService
+      .getTransaction(startDt, endDt)
+      .subscribe((data: TransDetails[]) => {
+        this.allTransactionDetails = cloneDeep(
+          data.sort((a, b) =>
+            new Date(a.transDate).getTime() - new Date(b.transDate).getTime() >
+            0
+              ? 1
+              : -1
+          )
+        );
+        this.getMonthlyExpensesTotal();
+        this.createSectionExpenseGraphLabel('Apr-22');
+      });
   }
 
   getMonthlyExpensesTotal(): any {
@@ -58,23 +89,6 @@ export class ViewAnalysisComponent implements OnInit {
       Object.keys(monthlyTotalExpenses),
       Object.values(monthlyTotalExpenses)
     );
-  }
-
-  getTransaction() {
-    this.trackerDetailsService
-      .getTransaction({ monthRange: this.range })
-      .subscribe((data: TransDetails[]) => {
-        this.allTransactionDetails = cloneDeep(
-          data.sort((a, b) =>
-            new Date(a.transDate).getTime() - new Date(b.transDate).getTime() >
-            0
-              ? 1
-              : -1
-          )
-        );
-        this.getMonthlyExpensesTotal();
-        this.createSectionExpenseGraphLabel('Apr-22');
-      });
   }
 
   createSectionExpenseGraphLabel(monthSelected: string) {
@@ -172,5 +186,11 @@ export class ViewAnalysisComponent implements OnInit {
         ],
       },
     });
+  }
+
+  monthRangeChange(monthRange: number) {
+    this.monthlyExpensesChart.destroy();
+    this.sectionExpensesChart.destroy();
+    this.getTransaction(monthRange);
   }
 }
