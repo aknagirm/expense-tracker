@@ -23,18 +23,21 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-4">
+      <div class="col-7">
         <p>
-          Trx. On: <strong>{{ eachTrx.transDate | date: "d/M/yy" }}</strong>
+          Trx.Dt:
+          <strong>{{ eachTrx.transDate | date: "d/M/yy" }} </strong> (Entry:
+          <span>{{ eachTrx.creationDate | date: "d/M/yy" }}</span
+          >)
         </p>
       </div>
-      <div class="col-4 px-0 text-float-center">
+      <!-- <div class="col-4 px-0 text-float-center">
         <p>
           Entry On:
           <strong>{{ eachTrx.creationDate | date: "d/M/yy" }}</strong>
         </p>
-      </div>
-      <div class="col-4 text-float-right">
+      </div> -->
+      <div class="col-5 text-float-right">
         <p>
           Blnc:
           <strong class="curr-balance">&#8377;{{ eachTrx.currBalance }}</strong>
