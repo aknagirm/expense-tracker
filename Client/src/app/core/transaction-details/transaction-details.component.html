@@ -11,8 +11,12 @@
   <div *ngFor="let eachTrx of allTransactionDetails">
     <div class="row">
       <div class="col-8">
-        <p class="note">{{ eachTrx.note }}</p>
-        <small>{{ eachTrx.sectionValue }}</small>
+        <p class="note">
+          <strong>{{ eachTrx.sectionValue }}:</strong> {{ eachTrx.note }}
+        </p>
+        <small
+          >Data entry Dt: {{ eachTrx.creationDate | date: "d/M/yy" }}</small
+        >
       </div>
       <div class="col-4 text-float-right">
         <strong
@@ -23,12 +27,13 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-7">
+      <div class="col-6">
         <p>
-          Trx.Dt:
-          <strong>{{ eachTrx.transDate | date: "d/M/yy" }} </strong> (Entry:
+          Tansaction Dt:
+          <strong>{{ eachTrx.transDate | date: "d/M/yy" }} </strong>
+          <!-- (Entry:
           <span>{{ eachTrx.creationDate | date: "d/M/yy" }}</span
-          >)
+          >) -->
         </p>
       </div>
       <!-- <div class="col-4 px-0 text-float-center">
@@ -37,7 +42,7 @@
           <strong>{{ eachTrx.creationDate | date: "d/M/yy" }}</strong>
         </p>
       </div> -->
-      <div class="col-5 text-float-right">
+      <div class="col-6 text-float-right">
         <p>
           Blnc:
           <strong class="curr-balance">&#8377;{{ eachTrx.currBalance }}</strong>
