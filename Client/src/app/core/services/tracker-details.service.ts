@@ -91,6 +91,7 @@ export class TrackerDetailsService {
     inputSection: SectionDetailsModel,
     creditDebitInd: creditDebitIndType
   ): Observable<any> {
+    console.log(inputDetails.incomeDetailsForm);
     let inputForm: FormGroup = inputDetails.incomeDetailsForm;
     if (inputForm.valid) {
       let transDetails: TransDetails = {
@@ -107,7 +108,6 @@ export class TrackerDetailsService {
         )
         .pipe(
           map((transDetail) => {
-            console.log(transDetail);
             this.matSnackBar.openFromComponent(SnackBarComponent, {
               duration: 5000,
             });
@@ -116,11 +116,10 @@ export class TrackerDetailsService {
               alertType: 'success',
             };
             this.setAlert(alertObj);
-            inputDetails.incomeDetailsForm.reset();
+            this.formReset(inputDetails.incomeDetailsForm);
             return transDetail;
           }),
           catchError((error) => {
-            console.log(error);
             let errorMsg = error['msg']
               ? error['msg']
               : 'Fields do not have valid data!!!';
@@ -162,7 +161,6 @@ export class TrackerDetailsService {
       )
       .pipe(
         map((data) => {
-          console.log(data);
           this.matSnackBar.openFromComponent(SnackBarComponent, {
             duration: 5000,
           });
@@ -174,7 +172,6 @@ export class TrackerDetailsService {
           return data['data'];
         }),
         catchError((error) => {
-          console.log(error);
           let errorMsg = error['msg']
             ? error['msg']
             : 'Fields do not have valid data!!!';
@@ -182,5 +179,12 @@ export class TrackerDetailsService {
           return of(error);
         })
       );
+  }
+
+  formReset(form: FormGroup) {
+    form.reset();
+    form.controls.transAmount.setValue('0');
+    form.controls.transDate.setValue(new Date());
+    form.markAsPristine();
   }
 }

@@ -193,21 +193,17 @@ route.delete("/deleteTransaction", verifyRequest, async (req, res) => {
     let userDetails = await User.findOne({
       emailId: email,
     }).exec();
-    console.log(req.query._id);
     const trxItemIdx = userDetails.transactions.findIndex(
       (eachTrx) => eachTrx._id.toString() == req.query._id.toString()
     );
-    console.log(trxItemIdx);
     if (trxItemIdx !== -1) {
       userDetails.transactions.splice(trxItemIdx, 1);
       await userDetails.save();
     }
-    res
-      .status(200)
-      .send({
-        msg: "Transaction deleted successfully",
-        data: userDetails.transactions,
-      });
+    res.status(200).send({
+      msg: "Transaction deleted successfully",
+      data: userDetails.transactions,
+    });
   } catch (err) {
     res.status(500).send({ msg: "Something is wrong" });
   }

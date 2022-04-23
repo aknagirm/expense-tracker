@@ -68,10 +68,7 @@ export class IncomeDetailsSectionsComponent implements OnInit {
     event.stopPropagation();
     let dirtyComponent = undefined;
     this.inputDetails._results.forEach((eachComp: InputDetailsComponent) => {
-      if (
-        eachComp.incomeDetailsForm?.dirty ||
-        eachComp.incomeDetailsForm.controls.transAmount.value != '0'
-      ) {
+      if (eachComp.incomeDetailsForm?.dirty) {
         dirtyComponent = eachComp;
         return;
       }
@@ -83,8 +80,9 @@ export class IncomeDetailsSectionsComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((confirmation: boolean) => {
         if (confirmation) {
-          dirtyComponent.incomeDetailsForm.reset();
-          dirtyComponent.incomeDetailsForm.controls.transAmount.setValue('0');
+          this.trackerDetailsService.formReset(
+            dirtyComponent.incomeDetailsForm
+          );
           this.accordionToogle(index);
         }
       });

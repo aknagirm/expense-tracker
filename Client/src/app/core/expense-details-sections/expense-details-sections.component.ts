@@ -34,7 +34,6 @@ export class ExpenseDetailsSectionsComponent implements OnInit {
     this.trackerDetailsService
       .getSectionDetails()
       .subscribe((sectionList: SectionDetailsModel[]) => {
-        console.log(sectionList);
         this.sectionList = sectionList.length
           ? sectionList.filter((eachSection) => eachSection.cdInd == 'D')
           : [];
@@ -73,7 +72,9 @@ export class ExpenseDetailsSectionsComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((confirmation: boolean) => {
         if (confirmation) {
-          dirtyComponent.incomeDetailsForm.reset();
+          this.trackerDetailsService.formReset(
+            dirtyComponent.incomeDetailsForm
+          );
           this.accordionToogle(index);
         }
       });

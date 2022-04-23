@@ -68,7 +68,6 @@ export class TransactionDetailsComponent implements OnInit, AfterViewInit {
   }
 
   getTransaction(newMonth: Date) {
-    console.log(newMonth);
     const endDtTemp = new Date(
       newMonth.getFullYear(),
       newMonth.getMonth() + 1,

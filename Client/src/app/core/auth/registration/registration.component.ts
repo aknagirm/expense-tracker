@@ -29,7 +29,6 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.createRegistrationForm();
-    //this.auth.userDetails.subscribe(console.log);
     this.trackerDetailsService.setHeaderTitle(`Welcome`);
   }
 
@@ -64,10 +63,8 @@ export class RegistrationComponent implements OnInit {
       .subscribe(
         (data) => {
           this.tempMailOtp = data;
-          console.log(data);
         },
         (error) => {
-          console.log(error);
           this.mailVerified = 'user exist';
         }
       );
@@ -133,7 +130,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   registrationSubmit() {
-    console.log(this.registrationFrom.value);
     let userDetails: UserDetails = this.registrationFrom.value;
     this.auth.userRegistration(userDetails);
   }

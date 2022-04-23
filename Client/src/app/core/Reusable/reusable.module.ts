@@ -18,12 +18,14 @@ import { HeaderComponent } from './header/header.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NumbersOnlyDirective } from '../directive/numbers-only.directive';
 @NgModule({
   declarations: [
     InputDetailsComponent,
     SnackBarComponent,
     HeaderComponent,
     CommonModalComponent,
+    NumbersOnlyDirective,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -51,6 +53,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatExpansionModule,
     MatIconModule,
     InputDetailsComponent,
+    NumbersOnlyDirective,
     HeaderComponent,
     MatDatepickerModule,
     MatNativeDateModule,

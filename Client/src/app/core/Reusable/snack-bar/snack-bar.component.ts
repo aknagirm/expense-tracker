@@ -13,7 +13,6 @@ export class SnackBarComponent implements OnInit {
   constructor(private trackerDetailsService: TrackerDetailsService) {}
 
   ngOnInit() {
-    console.log('snackbar');
     this.trackerDetailsService
       .getAlert()
       .subscribe((alert: AlertObjectModel) => {
@@ -36,7 +35,6 @@ export class SnackBarComponent implements OnInit {
           }
         }
         this.message = alert.alertMessage;
-        console.log(this.message, this.colorCode);
       });
   }
 }

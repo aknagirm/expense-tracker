@@ -23,17 +23,13 @@ export class AuthGuard implements CanActivate {
     | UrlTree {
     return this.authService.isLoggedIn().pipe(
       map((user: any) => {
-        console.log('hi', user);
         if (
           !user ||
           (user && (user instanceof HttpErrorResponse || user instanceof Error))
         ) {
-          console.log(user);
           this.router.navigate(['/login']);
-          console.log('hi', user);
           return false;
         } else {
-          console.log('hi', user);
           return true;
         }
       })

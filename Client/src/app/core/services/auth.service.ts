@@ -73,7 +73,6 @@ export class AuthService {
   }
 
   isLoggedIn(): Observable<UserDetails | HttpErrorResponse | Error> {
-    console.log('hi');
     return this.userDetails.asObservable();
   }
 

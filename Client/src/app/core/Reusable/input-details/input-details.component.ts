@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -28,22 +31,20 @@ export class InputDetailsComponent implements OnInit {
     this.incomeDetailsForm = this.fb.group({
       note: ['', Validators.required],
       transDate: [new Date(), Validators.required],
-      transAmount: [{ value: '0', disabled: true }],
-    });
-    this.incomeDetailsForm.valueChanges.subscribe((data) => {
-      console.log(this.incomeDetailsForm.controls.transAmount);
+      transAmount: [
+        '0',
+        Validators.compose([Validators.required, this.rangeValidator(1, null)]),
+      ],
     });
   }
 
   changeDate(event: MatDatepickerInputEvent<Date>) {
-    console.log(event.value);
     let today = new Date();
     this.selectedDate = event.value;
     this.incomeDetailsForm.get('transAmount').setValue(this.selectedDate);
     let days = Math.floor(
       (today.getTime() - this.selectedDate.getTime()) / 1000 / 60 / 60 / 24
     );
-    console.log(this.selectedDate, days);
     if (days < 1) {
       this.daysDiff = 'Today';
     } else if (1 <= days && days < 2) {
@@ -59,10 +60,9 @@ export class InputDetailsComponent implements OnInit {
   amountInputBtnClick(value: string | number) {
     let incomeAmountField: AbstractControl =
       this.incomeDetailsForm.get('transAmount');
-    let incomeAmountCurrVal: string = incomeAmountField.value?.replace(
-      /^0+/,
-      ''
-    );
+    let incomeAmountCurrVal: string = incomeAmountField.value
+      ? incomeAmountField.value.replace(/^0+/, '')
+      : '0';
     if (value == '*' || value == '+' || value == '/' || value == '-') {
       let evalVal = eval(incomeAmountCurrVal);
       incomeAmountField.setValue(`${evalVal ?? 0}${value}`);
@@ -76,5 +76,20 @@ export class InputDetailsComponent implements OnInit {
     } else {
       incomeAmountField.setValue(`${incomeAmountCurrVal}${value}`);
     }
+  }
+
+  rangeValidator(minVal: number, maxVal: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (isNaN(control.value)) {
+        return { outOfRange: true };
+      } else {
+        const numberVal = parseInt(control.value);
+        if ((maxVal && numberVal > maxVal) || (minVal && numberVal < minVal)) {
+          return { outOfRange: true };
+        } else {
+          null;
+        }
+      }
+    };
   }
 }
