@@ -84,6 +84,7 @@ export class IncomeDetailsSectionsComponent implements OnInit {
       dialogRef.afterClosed().subscribe((confirmation: boolean) => {
         if (confirmation) {
           dirtyComponent.incomeDetailsForm.reset();
+          dirtyComponent.incomeDetailsForm.controls.transAmount.setValue('0');
           this.accordionToogle(index);
         }
       });
