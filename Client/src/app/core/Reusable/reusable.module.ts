@@ -16,8 +16,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { HeaderComponent } from './header/header.component';
 import { PortalModule } from '@angular/cdk/portal';
+import { CommonModalComponent } from './common-modal/common-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
-  declarations: [InputDetailsComponent, SnackBarComponent, HeaderComponent],
+  declarations: [
+    InputDetailsComponent,
+    SnackBarComponent,
+    HeaderComponent,
+    CommonModalComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
@@ -36,8 +43,10 @@ import { PortalModule } from '@angular/cdk/portal';
     MatMenuModule,
     MatRadioModule,
     PortalModule,
+    MatDialogModule,
   ],
   exports: [
+    CommonModalComponent,
     MatTabsModule,
     MatExpansionModule,
     MatIconModule,
@@ -53,6 +62,7 @@ import { PortalModule } from '@angular/cdk/portal';
     SnackBarComponent,
     MatMenuModule,
     MatRadioModule,
+    MatDialogModule,
   ],
 })
 export class ReusableModule {}

@@ -13,18 +13,18 @@ p {
   font-size: 1.3rem;
 }
 
-.text-float-right {
-  text-align: end;
-}
-
-.text-float-center {
-  text-align: center;
-}
-
 .curr-balance {
   color: blue;
 }
 
 small {
   font-size: 0.775em;
+}
+
+.delete-icon {
+  color: red;
+}
+
+.line-over-delete {
+  color: gainsboro;
 }

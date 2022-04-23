@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash';
 import { debounceTime, fromEvent, Observable } from 'rxjs';
 import {
@@ -13,6 +14,7 @@ import {
   TransDetails,
   TransDetailsWithBlnc,
 } from 'src/app/interfaces/model';
+import { CommonModalComponent } from '../Reusable/common-modal/common-modal.component';
 import { TrackerDetailsService } from '../services/tracker-details.service';
 
 @Component({
@@ -28,7 +30,10 @@ export class TransactionDetailsComponent implements OnInit, AfterViewInit {
   datePipe: DatePipe = new DatePipe('en-US');
   allTransactionDetailsBkp: TransDetailsWithBlnc[];
 
-  constructor(private trackerDetailsService: TrackerDetailsService) {}
+  constructor(
+    private trackerDetailsService: TrackerDetailsService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.trackerDetailsService
@@ -77,30 +82,59 @@ export class TransactionDetailsComponent implements OnInit, AfterViewInit {
     this.trackerDetailsService
       .getTransaction(startDt, endDt)
       .subscribe((data: TransDetails[]) => {
-        this.allTransactionDetails = [];
-        this.allTransactionDetailsBkp = [];
-        this.allTransactionDetails = cloneDeep(
-          data.sort((a, b) =>
-            new Date(a.transDate).getTime() - new Date(b.transDate).getTime() >
-            0
-              ? 1
-              : -1
-          )
-        );
-        const sectionList = this.trackerDetailsService.sectionDetails;
-        let tempSum = 0;
-        this.allTransactionDetails.forEach((eachTrx) => {
-          eachTrx.sectionValue = sectionList.filter(
-            (section) => section.value === eachTrx.sectionValue
-          )[0]?.label;
-          const transAmt =
-            eachTrx.creditDebitInd === 'C'
-              ? parseInt(eachTrx.transAmount)
-              : parseInt(eachTrx.transAmount) * -1;
-          tempSum = tempSum + transAmt;
-          eachTrx.currBalance = tempSum;
-        });
-        this.allTransactionDetailsBkp = cloneDeep(this.allTransactionDetails);
+        this.buildTransactionData(data);
       });
+  }
+
+  buildTransactionData(data: TransDetails[]) {
+    this.allTransactionDetails = [];
+    this.allTransactionDetailsBkp = [];
+    this.allTransactionDetails = cloneDeep(
+      data.sort((a, b) =>
+        new Date(a.transDate).getTime() - new Date(b.transDate).getTime() > 0
+          ? 1
+          : -1
+      )
+    );
+    const sectionList = this.trackerDetailsService.sectionDetails;
+    let tempSum = 0;
+    this.allTransactionDetails.forEach((eachTrx) => {
+      eachTrx.sectionValue = sectionList.filter(
+        (section) => section.value === eachTrx.sectionValue
+      )[0]?.label;
+      const transAmt =
+        eachTrx.creditDebitInd === 'C'
+          ? parseInt(eachTrx.transAmount)
+          : parseInt(eachTrx.transAmount) * -1;
+      tempSum = tempSum + transAmt;
+      eachTrx.currBalance = tempSum;
+      eachTrx.trxClicked = false;
+    });
+    this.allTransactionDetailsBkp = cloneDeep(this.allTransactionDetails);
+  }
+
+  transDetailsClicked(selectedTrx: TransDetailsWithBlnc) {
+    this.allTransactionDetails.map((eachTrx) => {
+      if (eachTrx._id.toString() == selectedTrx._id.toString()) {
+        eachTrx.trxClicked = !eachTrx.trxClicked;
+      } else {
+        eachTrx.trxClicked = false;
+      }
+    });
+  }
+
+  deleteCalled(eachTrx: TransDetailsWithBlnc) {
+    const confMsg = 'Are you sure you want to delete this transaction?';
+    const dialogRef = this.dialog.open(CommonModalComponent, { data: confMsg });
+
+    dialogRef.afterClosed().subscribe((confirmation: boolean) => {
+      if (confirmation) {
+        this.trackerDetailsService
+          .deleteTransaction(eachTrx)
+          .subscribe((data) => {
+            this.buildTransactionData(data);
+          });
+      }
+    });
   }
 }

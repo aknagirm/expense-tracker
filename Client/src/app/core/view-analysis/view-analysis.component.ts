@@ -22,7 +22,6 @@ export class ViewAnalysisComponent implements OnInit {
   @ViewChild('lineChartLoc') lineChartLoc: ElementRef;
   @ViewChild('pieChartLoc') pieChartLoc: ElementRef;
 
-  _selectedTheme = 'light-theme';
   monthRange: DateRangeModel[];
   allTransactionDetails: TransDetails[];
   monthlyTotalExpenses = {};

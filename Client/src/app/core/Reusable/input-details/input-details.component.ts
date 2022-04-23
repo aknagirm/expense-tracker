@@ -27,8 +27,11 @@ export class InputDetailsComponent implements OnInit {
   createForm() {
     this.incomeDetailsForm = this.fb.group({
       note: ['', Validators.required],
-      transDate: [new Date()],
-      transAmount: ['0'],
+      transDate: [new Date(), Validators.required],
+      transAmount: [{ value: '0', disabled: true }],
+    });
+    this.incomeDetailsForm.valueChanges.subscribe((data) => {
+      console.log(this.incomeDetailsForm.controls.transAmount);
     });
   }
 
@@ -54,23 +57,22 @@ export class InputDetailsComponent implements OnInit {
   }
 
   amountInputBtnClick(value: string | number) {
-    console.log(value);
     let incomeAmountField: AbstractControl =
       this.incomeDetailsForm.get('transAmount');
-    let incomeAmountCurrVal: string = incomeAmountField.value.replace(
+    let incomeAmountCurrVal: string = incomeAmountField.value?.replace(
       /^0+/,
       ''
     );
     if (value == '*' || value == '+' || value == '/' || value == '-') {
       let evalVal = eval(incomeAmountCurrVal);
-      incomeAmountField.setValue(`${evalVal}${value}`);
+      incomeAmountField.setValue(`${evalVal ?? 0}${value}`);
     } else if (value == 'x') {
       incomeAmountField.setValue(
         incomeAmountCurrVal.substring(0, incomeAmountCurrVal.length - 1)
       );
     } else if (value == 'result') {
       let evalVal = eval(incomeAmountCurrVal);
-      incomeAmountField.setValue(`${evalVal}`);
+      incomeAmountField.setValue(`${evalVal ?? 0}`);
     } else {
       incomeAmountField.setValue(`${incomeAmountCurrVal}${value}`);
     }

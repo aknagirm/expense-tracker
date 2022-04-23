@@ -8,7 +8,10 @@
     </div>
   </div>
   <hr class="my-0" />
-  <div *ngFor="let eachTrx of allTransactionDetails">
+  <div
+    *ngFor="let eachTrx of allTransactionDetails"
+    (click)="transDetailsClicked(eachTrx)"
+  >
     <div class="row">
       <div class="col-8">
         <p class="note">
@@ -48,6 +51,12 @@
           <strong class="curr-balance">&#8377;{{ eachTrx.currBalance }}</strong>
         </p>
       </div>
+    </div>
+    <div class="row" *ngIf="eachTrx.trxClicked">
+      <span class="text-float-right delete-icon">
+        <hr class="line-over-delete my-1" />
+        <mat-icon (click)="deleteCalled(eachTrx)">delete</mat-icon></span
+      >
     </div>
     <hr class="dotted-underline my-2" />
   </div>

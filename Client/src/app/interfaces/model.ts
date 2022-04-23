@@ -20,7 +20,12 @@ export interface SectionDetailsModel {
   cdInd?: string;
 }
 
+export interface SectionDetailsRespModel extends SectionDetailsModel {
+  isExpanded?: boolean;
+}
+
 export interface TransDetails {
+  _id?: any;
   creationDate?: Date;
   transDate: Date;
   creditDebitInd: string;
@@ -31,6 +36,7 @@ export interface TransDetails {
 
 export interface TransDetailsWithBlnc extends TransDetails {
   currBalance?: number;
+  trxClicked?: boolean;
 }
 
 export interface UserDetails {

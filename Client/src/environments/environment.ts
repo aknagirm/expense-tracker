@@ -15,5 +15,6 @@ export const environment = {
     saveTransaction: 'route/saveTransaction',
     getDateRange: 'route/getDateRange',
     getTransaction: 'route/getTransaction',
+    deleteTransaction: 'route/deleteTransaction',
   },
 };

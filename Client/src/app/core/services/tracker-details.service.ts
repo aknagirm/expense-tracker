@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,6 +12,7 @@ import {
   MonthRange,
   SectionDetailsModel,
   TransDetails,
+  TransDetailsWithBlnc,
   UserDetails,
 } from 'src/app/interfaces/model';
 import * as environment from 'src/environments/environment';
@@ -99,7 +100,7 @@ export class TrackerDetailsService {
         transAmount: inputForm.value.transAmount,
         note: inputForm.value.note,
       };
-      this.http
+      return this.http
         .post(
           `${this.environment.baseUrl}${this.environment.servlet_endpoint.saveTransaction}`,
           { transDetails }
@@ -115,6 +116,7 @@ export class TrackerDetailsService {
               alertType: 'success',
             };
             this.setAlert(alertObj);
+            inputDetails.incomeDetailsForm.reset();
             return transDetail;
           }),
           catchError((error) => {
@@ -123,10 +125,9 @@ export class TrackerDetailsService {
               ? error['msg']
               : 'Fields do not have valid data!!!';
             this.showError(errorMsg);
-            return of(error);
+            return error;
           })
-        )
-        .subscribe();
+        );
     } else {
       let errorMsg = 'Fields do not have valid data!!!';
       this.showError(errorMsg);
@@ -150,5 +151,36 @@ export class TrackerDetailsService {
       alertType: 'error',
     };
     this.setAlert(alertObj);
+  }
+
+  deleteTransaction(transaction: TransDetailsWithBlnc) {
+    const httpParams = new HttpParams().set('_id', transaction._id);
+    return this.http
+      .delete(
+        `${this.environment.baseUrl}${this.environment.servlet_endpoint.deleteTransaction}`,
+        { params: httpParams }
+      )
+      .pipe(
+        map((data) => {
+          console.log(data);
+          this.matSnackBar.openFromComponent(SnackBarComponent, {
+            duration: 5000,
+          });
+          let alertObj: AlertObjectModel = {
+            alertMessage: data['msg'],
+            alertType: 'success',
+          };
+          this.setAlert(alertObj);
+          return data['data'];
+        }),
+        catchError((error) => {
+          console.log(error);
+          let errorMsg = error['msg']
+            ? error['msg']
+            : 'Fields do not have valid data!!!';
+          this.showError(errorMsg);
+          return of(error);
+        })
+      );
   }
 }

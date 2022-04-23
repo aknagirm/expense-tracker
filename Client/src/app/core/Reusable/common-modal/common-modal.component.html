@@ -1,0 +1,17 @@
+<div class="container-fluid px-0">
+  <div>
+    <p>{{ data }}</p>
+  </div>
+  <div class="row justify-content-between">
+    <div class="col-6">
+      <button mat-raised-button color="primary" [mat-dialog-close]="true">
+        Proceed
+      </button>
+    </div>
+    <div class="col-6 text-float-right">
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

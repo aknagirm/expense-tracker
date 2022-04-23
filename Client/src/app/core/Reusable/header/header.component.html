@@ -1,8 +1,15 @@
 <div class="container-fluid px-0 header-container">
-  <div class="row mx-1">
-    <div class="col-10">
+  <div class="row mx-1 header-row">
+    <div class="col-9">
       <!---------- Header  normal ---------->
-      <span *ngIf="currentNavigation == '/addTransaction'">{{ title }}</span>
+      <span
+        *ngIf="
+          currentNavigation == '/addTransaction' ||
+          currentNavigation == '/login' ||
+          currentNavigation == '/registration'
+        "
+        >{{ title }}</span
+      >
 
       <!---------- Header for month/view-transaction page ---------->
       <span
@@ -39,7 +46,26 @@
         </button>
       </mat-menu>
     </div>
-    <div class="col-2">
+    <div class="col-1">
+      <button
+        mat-icon-button
+        class="more-option-icn"
+        *ngIf="
+          currentNavigation !== '/addTransaction' &&
+          currentNavigation !== '/login' &&
+          currentNavigation !== '/registration'
+        "
+        (click)="navigateToAddTransaction()"
+      >
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+    </div>
+    <div
+      class="col-2 text-float-right"
+      *ngIf="
+        currentNavigation !== '/login' && currentNavigation !== '/registration'
+      "
+    >
       <button
         mat-icon-button
         [matMenuTriggerFor]="menu"

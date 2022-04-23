@@ -1,8 +1,9 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { UserDetails } from "src/app/interfaces/model";
-import * as environment from "src/environments/environment";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { UserDetails } from 'src/app/interfaces/model';
+import * as environment from 'src/environments/environment';
 
 interface UserDetailsResp {
   msg?: string;
@@ -11,13 +12,13 @@ interface UserDetailsResp {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AuthService {
-  userDetails = new Subject<UserDetails>();
+  userDetails = new BehaviorSubject<UserDetails>(null);
   environment = environment.environment;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   loginUser(userDetails: UserDetails) {
     this.http
@@ -26,9 +27,18 @@ export class AuthService {
         { userDetails }
       )
       .subscribe((userDetailsResp: UserDetailsResp) => {
-        localStorage.setItem("token", userDetailsResp.token);
+        localStorage.setItem('token', userDetailsResp.token);
         this.userDetails.next(userDetailsResp.user);
       });
+  }
+
+  logOut() {
+    let userToken = localStorage.getItem('token');
+    if (userToken) {
+      localStorage.removeItem('token');
+      this.router.navigate(['login']);
+    }
+    this.userDetails.next(null);
   }
 
   userRegistration(userDetails: UserDetails) {
@@ -38,7 +48,7 @@ export class AuthService {
         { userDetails }
       )
       .subscribe((userDetailsResp: UserDetailsResp) => {
-        localStorage.setItem("token", userDetailsResp.token);
+        localStorage.setItem('token', userDetailsResp.token);
         this.userDetails.next(userDetailsResp.user);
       });
   }
@@ -59,7 +69,12 @@ export class AuthService {
   }
 
   getLocalStorageItem() {
-    return localStorage.getItem("token");
+    return localStorage.getItem('token');
+  }
+
+  isLoggedIn(): Observable<UserDetails | HttpErrorResponse | Error> {
+    console.log('hi');
+    return this.userDetails.asObservable();
   }
 
   mailOtpGenerate(email: string) {

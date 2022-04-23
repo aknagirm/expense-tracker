@@ -1,31 +1,18 @@
-import { HttpClient } from "@angular/common/http";
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NgForm,
-  NgModel,
-  Validators,
-} from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MessageService, SelectItem } from "primeng/api";
-import { Observable, Subscription } from "rxjs";
-import { take } from "rxjs/operators";
-import { UserDetails } from "src/app/interfaces/model";
-import { environment } from "src/environments/environment";
-import { AuthService } from "../../services/auth.service";
-import { TrackerDetailsService } from "../../services/tracker-details.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { UserDetails } from 'src/app/interfaces/model';
+import { AuthService } from '../../services/auth.service';
+import { TrackerDetailsService } from '../../services/tracker-details.service';
 
 @Component({
-  selector: "app-registration",
-  templateUrl: "./registration.component.html",
-  styleUrls: ["./registration.component.scss"],
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent implements OnInit {
   registrationFrom: FormGroup;
-  mailVerified = "matched";
+  mailVerified = 'matched';
   hide1 = true;
   hide2 = true;
   verifyMailOpen = false;
@@ -34,20 +21,25 @@ export class RegistrationComponent implements OnInit {
   tempMailOtp: any;
   mailOtp: any;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private trackerDetailsService: TrackerDetailsService
+  ) {}
 
   ngOnInit() {
     this.createRegistrationForm();
-    this.auth.userDetails.subscribe(console.log);
+    //this.auth.userDetails.subscribe(console.log);
+    this.trackerDetailsService.setHeaderTitle(`Welcome`);
   }
 
   createRegistrationForm() {
     this.registrationFrom = this.fb.group({
-      firstName: ["", Validators.required],
-      lastName: ["", Validators.required],
-      emailId: ["", [Validators.required, Validators.email]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      emailId: ['', [Validators.required, Validators.email]],
       passWord: [
-        "",
+        '',
         [
           Validators.required,
           Validators.pattern(
@@ -55,7 +47,7 @@ export class RegistrationComponent implements OnInit {
           ),
         ],
       ],
-      passWordConf: ["", Validators.required],
+      passWordConf: ['', Validators.required],
     });
   }
 
@@ -64,9 +56,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   mailOtpGenerate() {
-    this.counter$ ? this.counter$.unsubscribe() : "";
+    this.counter$ ? this.counter$.unsubscribe() : '';
     this.verifyMailOpen = true;
-    this.mailVerified = "not tried";
+    this.mailVerified = 'not tried';
     this.auth
       .mailOtpGenerate(this.registrationFrom.controls.emailId.value)
       .subscribe(
@@ -76,31 +68,31 @@ export class RegistrationComponent implements OnInit {
         },
         (error) => {
           console.log(error);
-          this.mailVerified = "user exist";
+          this.mailVerified = 'user exist';
         }
       );
 
-    this.counter$ = this.startTimer("00:02:00").subscribe((data) => {
+    this.counter$ = this.startTimer('00:02:00').subscribe((data) => {
       this.myMailTimer = data.substr(3, 5);
     });
   }
 
   verifyMail() {
     this.mailOtp = (<HTMLInputElement>(
-      document.getElementById("otp-mail")
+      document.getElementById('otp-mail')
     )).value;
 
-    if (this.myMailTimer == "00:00") {
-      this.mailVerified = "expired";
+    if (this.myMailTimer == '00:00') {
+      this.mailVerified = 'expired';
       this.tempMailOtp.mailOtp = null;
     } else {
       if (this.mailOtp == this.tempMailOtp.mailOtp) {
-        this.mailVerified = "matched";
+        this.mailVerified = 'matched';
         setTimeout(() => {
           this.verifyMailOpen = false;
         }, 2000);
       } else {
-        this.mailVerified = "not matched";
+        this.mailVerified = 'not matched';
       }
     }
   }
@@ -130,11 +122,11 @@ export class RegistrationComponent implements OnInit {
 
         startSec = startSec - 1;
         obs.next(
-          ("0" + startHrs).slice(-2) +
-            ":" +
-            ("0" + startMin).slice(-2) +
-            ":" +
-            ("0" + startSec).slice(-2)
+          ('0' + startHrs).slice(-2) +
+            ':' +
+            ('0' + startMin).slice(-2) +
+            ':' +
+            ('0' + startSec).slice(-2)
         );
       }, 1000);
     });

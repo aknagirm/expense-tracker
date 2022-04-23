@@ -10,6 +10,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { DateRangeModel } from 'src/app/interfaces/model';
+import { AuthService } from '../../services/auth.service';
 import { TrackerDetailsService } from '../../services/tracker-details.service';
 
 type StartView = 'month' | 'year' | 'multi-year';
@@ -32,7 +33,8 @@ export class HeaderComponent implements OnInit {
   startView: StartView = 'year';
   constructor(
     private router: Router,
-    private trackerDetailsService: TrackerDetailsService
+    private trackerDetailsService: TrackerDetailsService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -66,11 +68,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    let userToken = localStorage.getItem('token');
-    if (userToken) {
-      localStorage.removeItem('token');
-      this.router.navigate(['login']);
-    }
+    this.authService.logOut();
   }
 
   viewAnalysisCheck() {
@@ -81,9 +79,12 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['viewTransactionDetails']);
   }
 
+  navigateToAddTransaction() {
+    this.router.navigate(['addTransaction']);
+  }
+
   monthSelected(event: Date) {
     this.monthPicker.close();
     this.trackerDetailsService.setNewMonthSelected(event);
-    //this.monthSelectionMenuTrigger.closeMenu();
   }
 }
