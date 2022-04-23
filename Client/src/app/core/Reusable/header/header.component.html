@@ -1,92 +1,95 @@
 <div class="container-fluid px-0 header-container">
-  <div class="row mx-1 header-row">
-    <div class="col-9">
-      <!---------- Header  normal ---------->
-      <span
-        *ngIf="
-          currentNavigation == '/addTransaction' ||
-          currentNavigation == '/login' ||
-          currentNavigation == '/registration'
-        "
-        >{{ title }}</span
-      >
-
-      <!---------- Header for month/view-transaction page ---------->
-      <span
-        *ngIf="currentNavigation == '/viewTransactionDetails'"
-        (click)="monthPicker.open()"
-        >{{ title }}</span
-      >
-      <input
-        matInput
-        [matDatepicker]="monthPicker"
-        style="display: none"
-        [min]="minDate"
-        [max]="maxDate"
-      />
-      <mat-datepicker
-        #monthPicker
-        [startView]="startView"
-        (monthSelected)="monthSelected($event)"
-      >
-      </mat-datepicker>
-      <!---------- Header for month range/view-analysis page ---------->
-      <span
-        *ngIf="currentNavigation == '/viewAnalysis'"
-        [matMenuTriggerFor]="monthRangeMenu"
-        >{{ title }}</span
-      >
-      <mat-menu #monthRangeMenu="matMenu">
-        <button
-          mat-menu-item
-          *ngFor="let eachRange of monthRange"
-          (click)="monthRangeChange(+eachRange.dateRange)"
+  <div class="row mx-1 header-row justify-content-center">
+    <div class="col-md-4 row header-row-inside-section">
+      <div class="col-9 px-0">
+        <!---------- Header  normal ---------->
+        <span
+          *ngIf="
+            currentNavigation == '/addTransaction' ||
+            currentNavigation == '/login' ||
+            currentNavigation == '/registration'
+          "
+          >{{ title }}</span
         >
-          Last {{ eachRange.dateRange }} Months
+
+        <!---------- Header for month/view-transaction page ---------->
+        <span
+          *ngIf="currentNavigation == '/viewTransactionDetails'"
+          (click)="monthPicker.open()"
+          >{{ title }}</span
+        >
+        <input
+          matInput
+          [matDatepicker]="monthPicker"
+          style="display: none"
+          [min]="minDate"
+          [max]="maxDate"
+        />
+        <mat-datepicker
+          #monthPicker
+          [startView]="startView"
+          (monthSelected)="monthSelected($event)"
+        >
+        </mat-datepicker>
+        <!---------- Header for month range/view-analysis page ---------->
+        <span
+          *ngIf="currentNavigation == '/viewAnalysis'"
+          [matMenuTriggerFor]="monthRangeMenu"
+          >{{ title }}</span
+        >
+        <mat-menu #monthRangeMenu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let eachRange of monthRange"
+            (click)="monthRangeChange(+eachRange.dateRange)"
+          >
+            Last {{ eachRange.dateRange }} Months
+          </button>
+        </mat-menu>
+      </div>
+      <div class="col-2 text-float-right px-0">
+        <button
+          mat-icon-button
+          class="more-option-icn"
+          *ngIf="
+            currentNavigation !== '/addTransaction' &&
+            currentNavigation !== '/login' &&
+            currentNavigation !== '/registration'
+          "
+          (click)="navigateToAddTransaction()"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
         </button>
-      </mat-menu>
-    </div>
-    <div class="col-1">
-      <button
-        mat-icon-button
-        class="more-option-icn"
+      </div>
+      <div
+        class="col-1 text-float-right px-0"
         *ngIf="
-          currentNavigation !== '/addTransaction' &&
           currentNavigation !== '/login' &&
           currentNavigation !== '/registration'
         "
-        (click)="navigateToAddTransaction()"
       >
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-    </div>
-    <div
-      class="col-2 text-float-right"
-      *ngIf="
-        currentNavigation !== '/login' && currentNavigation !== '/registration'
-      "
-    >
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        class="more-option-icn"
-      >
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="viewTransactionDetails()">
-          <mat-icon>table_chart</mat-icon>
-          <span>Transaction Details</span>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          class="more-option-icn"
+        >
+          <mat-icon>more_vert</mat-icon>
         </button>
-        <button mat-menu-item (click)="viewAnalysisCheck()">
-          <mat-icon>bar_chart</mat-icon>
-          <span>View Analysis</span>
-        </button>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>person</mat-icon>
-          <span>Logout</span>
-        </button>
-      </mat-menu>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item (click)="viewTransactionDetails()">
+            <mat-icon>table_chart</mat-icon>
+            <span>Transaction Details</span>
+          </button>
+          <button mat-menu-item (click)="viewAnalysisCheck()">
+            <mat-icon>bar_chart</mat-icon>
+            <span>View Analysis</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>person</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </div>
 </div>
