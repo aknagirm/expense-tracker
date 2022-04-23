@@ -68,7 +68,10 @@ export class IncomeDetailsSectionsComponent implements OnInit {
     event.stopPropagation();
     let dirtyComponent = undefined;
     this.inputDetails._results.forEach((eachComp: InputDetailsComponent) => {
-      if (eachComp.incomeDetailsForm?.dirty) {
+      if (
+        eachComp.incomeDetailsForm?.dirty ||
+        eachComp.incomeDetailsForm.controls.transAmount.value != '0'
+      ) {
         dirtyComponent = eachComp;
         return;
       }
