@@ -19,6 +19,7 @@ const userModel = new Schema({
   passWord: String,
   transactions: [
     {
+      creationDate: Date,
       transDate: Date,
       creditDebitInd: String,
       sectionValue: String,
