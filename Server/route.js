@@ -1,6 +1,7 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const { sectionModel, dateRangeModel } = require("./models/section-model");
 const User = require("./models/user-model");
@@ -12,33 +13,46 @@ const secretKey = process.env.SECRET_KEY;
 
 const route = express.Router();
 
-route.post("/registration", (req, res) => {
-  let user = req.body.userDetails;
-  user.creationDate = new Date();
-  user.transactions = [];
-  let newUser = new User(user);
-  newUser.save((err, user) => {
-    if (err) {
-      res.status(500).send({ msg: "Something is wrong" });
-    } else {
-      let payload = { _id: user._id, emailId: user.emailId };
-      let token = jwt.sign(payload, secretKey);
-      res.status(200).send({
-        msg: "new user created",
-        token: token,
-        user: user,
-      });
-    }
-  });
+route.post("/registration", async (req, res) => {
+  try {
+    let user = req.body.userDetails;
+    user.creationDate = new Date();
+    user.transactions = [];
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(user.passWord, salt);
+    user.passWord = hashedPassword;
+    let newUser = new User(user);
+    newUser.save((err, user) => {
+      if (err) {
+        res.status(500).send({ msg: "Something is wrong" });
+      } else {
+        let payload = { _id: user._id, emailId: user.emailId };
+        let token = jwt.sign(payload, secretKey);
+        res.status(200).send({
+          msg: "new user created",
+          token: token,
+          user: user,
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: "Something is wrong" });
+  }
 });
 
-route.post("/login", (req, res) => {
-  let userData = req.body.userDetails;
-  User.findOne({ emailId: userData.emailId }, (err, user) => {
+route.post("/login", async (req, res) => {
+  try {
+    let userData = req.body.userDetails;
+    let user = await User.findOne({ emailId: userData.emailId }).exec();
     if (!user) {
       res.status(402).send({ msg: "User not found" });
     } else {
-      if (user.password !== userData.password) {
+      let passwordMatched = await bcrypt.compare(
+        userData.passWord,
+        user.passWord
+      );
+      if (!passwordMatched) {
         res.status(402).send({ msg: "Invalid Password" });
       } else {
         let payload = { _id: user._id, emailId: user.emailId };
@@ -49,7 +63,10 @@ route.post("/login", (req, res) => {
         });
       }
     }
-  });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: "Something is wrong" });
+  }
 });
 
 route.get("/section", (req, res) => {

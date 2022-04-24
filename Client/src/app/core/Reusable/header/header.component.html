@@ -18,19 +18,20 @@
           (click)="monthPicker.open()"
           >{{ title }}</span
         >
-        <input
-          matInput
-          [matDatepicker]="monthPicker"
-          style="display: none"
-          [min]="minDate"
-          [max]="maxDate"
-        />
-        <mat-datepicker
-          #monthPicker
-          [startView]="startView"
-          (monthSelected)="monthSelected($event)"
-        >
-        </mat-datepicker>
+        <div class="wrapper-size-none">
+          <input
+            matInput
+            [matDatepicker]="monthPicker"
+            [min]="minDate"
+            [max]="maxDate"
+          />
+          <mat-datepicker
+            #monthPicker
+            [startView]="startView"
+            (monthSelected)="monthSelected($event)"
+          >
+          </mat-datepicker>
+        </div>
         <!---------- Header for month range/view-analysis page ---------->
         <span
           *ngIf="currentNavigation == '/viewAnalysis'"

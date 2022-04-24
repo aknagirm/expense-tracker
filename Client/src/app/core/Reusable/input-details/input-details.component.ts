@@ -32,7 +32,7 @@ export class InputDetailsComponent implements OnInit {
       note: ['', Validators.required],
       transDate: [new Date(), Validators.required],
       transAmount: [
-        '0',
+        '',
         Validators.compose([Validators.required, this.rangeValidator(1, null)]),
       ],
     });
@@ -41,7 +41,7 @@ export class InputDetailsComponent implements OnInit {
   changeDate(event: MatDatepickerInputEvent<Date>) {
     let today = new Date();
     this.selectedDate = event.value;
-    this.incomeDetailsForm.get('transAmount').setValue(this.selectedDate);
+    this.incomeDetailsForm.get('transDate').setValue(this.selectedDate);
     let days = Math.floor(
       (today.getTime() - this.selectedDate.getTime()) / 1000 / 60 / 60 / 24
     );
@@ -62,7 +62,7 @@ export class InputDetailsComponent implements OnInit {
       this.incomeDetailsForm.get('transAmount');
     let incomeAmountCurrVal: string = incomeAmountField.value
       ? incomeAmountField.value.replace(/^0+/, '')
-      : '0';
+      : '';
     if (value == '*' || value == '+' || value == '/' || value == '-') {
       let evalVal = eval(incomeAmountCurrVal);
       incomeAmountField.setValue(`${evalVal ?? 0}${value}`);

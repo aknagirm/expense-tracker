@@ -18,6 +18,17 @@
   height: 50px;
 }
 
+.wrapper-size-none {
+  height: 0px;
+  width: 0px;
+  input {
+    height: 0px;
+    width: 0px;
+    position: absolute;
+    top: 50px;
+  }
+}
+
 ::ng-deep .mat-calendar-period-button {
   display: none !important;
 }

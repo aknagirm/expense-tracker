@@ -10,7 +10,7 @@
         #panelH
         (click)="panelH._toggle()"
       >
-        <mat-panel-title class="col-10">
+        <mat-panel-title class="col-10 ps-2">
           <mat-icon> star_border </mat-icon>
           <label class="mx-3" for="sectionIcons_{{ i }}">{{
             eachSection.label
@@ -29,7 +29,7 @@
           >
           <mat-icon
             *ngIf="expansionPanel.expanded"
-            class="mx-2"
+            class="mx-1"
             (click)="saveTransaction(i, eachSection)"
             >check_circle</mat-icon
           >

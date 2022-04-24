@@ -1,5 +1,8 @@
 .hidden-elem {
-  display: none;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  left: 0px;
 }
 
 .note-text-field {
@@ -26,4 +29,8 @@
     border-color: black;
     border-radius: 5px;
   }
+}
+
+::ng-deep .mat-expansion-panel-header.mat-expanded {
+  height: 50px !important;
 }

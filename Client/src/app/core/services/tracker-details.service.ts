@@ -183,7 +183,7 @@ export class TrackerDetailsService {
 
   formReset(form: FormGroup) {
     form.reset();
-    form.controls.transAmount.setValue('0');
+    //  form.controls.transAmount.setValue('0');
     form.controls.transDate.setValue(new Date());
     form.markAsPristine();
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { UserDetails } from 'src/app/interfaces/model';
 import { AuthService } from '../../services/auth.service';
@@ -24,10 +25,16 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private trackerDetailsService: TrackerDetailsService
+    private trackerDetailsService: TrackerDetailsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.auth.isLoggedIn().subscribe((user) => {
+      if (user) {
+        this.router.navigate['/addTransaction'];
+      }
+    });
     this.createRegistrationForm();
     this.trackerDetailsService.setHeaderTitle(`Welcome`);
   }
@@ -60,14 +67,14 @@ export class RegistrationComponent implements OnInit {
     this.mailVerified = 'not tried';
     this.auth
       .mailOtpGenerate(this.registrationFrom.controls.emailId.value)
-      .subscribe(
-        (data) => {
+      .subscribe({
+        next: (data) => {
           this.tempMailOtp = data;
         },
-        (error) => {
+        error: (error) => {
           this.mailVerified = 'user exist';
-        }
-      );
+        },
+      });
 
     this.counter$ = this.startTimer('00:02:00').subscribe((data) => {
       this.myMailTimer = data.substr(3, 5);
