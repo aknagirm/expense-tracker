@@ -13,12 +13,5 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.getUserDetails();
-    this.auth.userDetails.subscribe((userData) => {
-      if (userData) {
-        this.route.navigate(['/addTransaction']);
-      } else {
-        this.route.navigate(['/login']);
-      }
-    });
   }
 }

@@ -19,6 +19,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NumbersOnlyDirective } from '../directive/numbers-only.directive';
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 @NgModule({
   declarations: [
     InputDetailsComponent,
@@ -26,6 +27,7 @@ import { NumbersOnlyDirective } from '../directive/numbers-only.directive';
     HeaderComponent,
     CommonModalComponent,
     NumbersOnlyDirective,
+    LoadingScreenComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -49,6 +51,7 @@ import { NumbersOnlyDirective } from '../directive/numbers-only.directive';
   ],
   exports: [
     CommonModalComponent,
+    LoadingScreenComponent,
     MatTabsModule,
     MatExpansionModule,
     MatIconModule,

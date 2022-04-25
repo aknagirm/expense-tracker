@@ -32,7 +32,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
     this.auth.isLoggedIn().subscribe((user) => {
       if (user) {
-        this.router.navigate['/addTransaction'];
+        this.router.navigate(['/addTransaction']);
       }
     });
     this.createRegistrationForm();

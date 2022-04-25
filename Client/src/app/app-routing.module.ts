@@ -25,7 +25,7 @@ const routes: Routes = [
     component: TransactionDetailsComponent,
     canActivate: [AuthGuard],
   },
-  { path: '**', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/addTransaction', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -75,8 +75,14 @@ export class AuthService {
         .get(
           `${this.environment.baseUrl}${this.environment.servlet_endpoint.getUserDetails}`
         )
-        .subscribe((userData: UserDetails) => {
-          this.userDetails.next(userData);
+        .subscribe({
+          next: (userData: UserDetails) => {
+            this.userDetails.next(userData);
+          },
+          error: () => {
+            this.userDetails.next(null);
+          },
+          complete: () => {},
         });
     } else {
       this.userDetails.next(null);
