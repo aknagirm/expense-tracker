@@ -102,14 +102,14 @@ route.post("/mailOtp", async (req, res) => {
       var mailOptions = {
         from: process.env.MAIL_USER,
         to: req.body.emailId,
-        subject: "OTP for MakeUrMark mail verification",
+        subject: "OTP for Expense Tracker email verification",
         html: `<p>Hi</p>
                 <br>
-                <p>Thanks for choosing MakeUrMark. This is just a automailer. Your mail OTP is: <strong>${val}</strong>.</p>
+                <p>Thanks for choosing Expense Tracker. This is just a automailer. Your mail OTP is: <strong>${val}</strong>.</p>
                 <p>This OTP is valid for next 2 min only.</p>
                 <br>
                 <p>Regards</p>
-                <p>MakeURMark</p>`,
+                <p>Expense Tracker</p>`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
