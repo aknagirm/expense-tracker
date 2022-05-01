@@ -4,7 +4,7 @@ In this application user can save their daily income and expenditure, for tracki
 This helps a user in maintaining a balance between spending money and saving for future purposes.
 Its benefits also includes separate categories within which we can group expenses. Also for every expense , the remanining balance is shown in negative/positive which helps an individual plan for the next cost/investment.
 
-I too use this application. And I must say , as a heavy spender myself , this app has helped me in restricting my expenditure to necesities and requirements thus being able to save up for the future. :-) ;-)
+I too use this application. And I must say , as a heavy spender myself , this app has helped me in restricting my expenditure to necesities and requirements thus being able to save up for the future. &#128512; &#128512;
 
 <hr>
 
