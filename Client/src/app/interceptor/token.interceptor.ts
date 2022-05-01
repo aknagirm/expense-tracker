@@ -6,7 +6,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { tap } from 'rxjs';
+import { catchError, tap } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 import { LoaderService } from '../core/services/loader.service';
 
@@ -28,13 +28,17 @@ export class TokenInterceptor implements HttpInterceptor {
       },
     });
     return next.handle(tokenizedReq).pipe(
-      tap((event) => {
-        if (
-          event instanceof HttpResponse ||
-          event instanceof HttpErrorResponse
-        ) {
-          this.loaderService.stopLoader();
-        }
+      tap({
+        next: (event) => {
+          if (event instanceof HttpResponse) {
+            this.loaderService.stopLoader();
+          }
+        },
+        error: (event) => {
+          if (event instanceof HttpErrorResponse) {
+            this.loaderService.resetLoader();
+          }
+        },
       })
     );
   }
