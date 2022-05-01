@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ import { TrackerDetailsService } from '../../services/tracker-details.service';
 })
 export class RegistrationComponent implements OnInit {
   registrationFrom: FormGroup;
-  mailVerified = 'matched';
+  mailVerified = 'not tried';
   hide1 = true;
   hide2 = true;
   verifyMailOpen = false;
@@ -63,16 +64,17 @@ export class RegistrationComponent implements OnInit {
 
   mailOtpGenerate() {
     this.counter$ ? this.counter$.unsubscribe() : '';
-    this.verifyMailOpen = true;
     this.mailVerified = 'not tried';
     this.auth
       .mailOtpGenerate(this.registrationFrom.controls.emailId.value)
       .subscribe({
         next: (data) => {
+          this.verifyMailOpen = true;
           this.tempMailOtp = data;
         },
-        error: (error) => {
-          this.mailVerified = 'user exist';
+        error: (error: HttpErrorResponse) => {
+          this.mailVerified = error.error.msg;
+          this.trackerDetailsService.showError(error.error.msg);
         },
       });
 
@@ -88,6 +90,8 @@ export class RegistrationComponent implements OnInit {
 
     if (this.myMailTimer == '00:00') {
       this.mailVerified = 'expired';
+      this.trackerDetailsService.showError('OTP Expired, Please retry');
+      this.verifyMailOpen = false;
       this.tempMailOtp.mailOtp = null;
     } else {
       if (this.mailOtp == this.tempMailOtp.mailOtp) {
@@ -97,6 +101,7 @@ export class RegistrationComponent implements OnInit {
         }, 2000);
       } else {
         this.mailVerified = 'not matched';
+        this.trackerDetailsService.showError('otp not matched');
       }
     }
   }

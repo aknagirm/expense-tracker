@@ -157,7 +157,7 @@
 
         <div class="row border mx-0 mt-3" *ngIf="verifyMailOpen">
           <div class="form-group col-10 mx-auto mb-0" style="margin-top: 15px">
-            <div class="col-12" style="text-align: center; font-size: 20px">
+            <!--  <div class="col-12" style="text-align: center; font-size: 20px">
               <p *ngIf="mailVerified == 'matched'">
                 <i class="fa fa-check-square-o" style="color: green"></i> Email
                 id has been verified
@@ -165,11 +165,11 @@
               <p *ngIf="mailVerified == 'not matched'">
                 <i class="fa fa-close" style="color: red"></i> otp not matched
               </p>
-              <p *ngIf="mailVerified == 'no mail'">
+              <p *ngIf="mailVerified == 'need to check email id'">
                 <i class="fa fa-close" style="color: red"></i> Email id not
                 found
               </p>
-              <p *ngIf="mailVerified == 'user exist'">
+              <p *ngIf="mailVerified == 'Email Id already Registered'">
                 <i class="fa fa-close" style="color: red"></i> Email id already
                 registered
               </p>
@@ -177,9 +177,9 @@
                 <i class="fa fa-close" style="color: red"></i> OTP Expired,
                 Please retry
               </p>
-            </div>
+            </div> -->
 
-            <div *ngIf="mailVerified != 'matched'">
+            <div>
               <label for="otp-mail"
                 >Please enter the <strong>OTP</strong> sent to your email id for
                 verification</label

@@ -101,7 +101,7 @@ route.post("/mailOtp", async (req, res) => {
 
       var mailOptions = {
         from: process.env.MAIL_USER,
-        to: req.body.email,
+        to: req.body.emailId,
         subject: "OTP for MakeUrMark mail verification",
         html: `<p>Hi</p>
                 <br>
@@ -114,8 +114,9 @@ route.post("/mailOtp", async (req, res) => {
 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          let err = new Error();
-          err.code = "UNKNOWN_MAIL_ID";
+          /*  let err = new Error();
+          err.code = "UNKNOWN_MAIL_ID"; */
+          res.status(500).send({ msg: "need to check email id" });
           throw err;
         } else {
           res.status(200).send({ mailOtp: val });
@@ -124,6 +125,7 @@ route.post("/mailOtp", async (req, res) => {
       /* } */
     }
   } catch (err) {
+    console.log(err);
     if (err.code == "UNKNOWN_MAIL_ID") {
       res.status(500).send({ msg: "need to check email id" });
     } else if (err.code == "USER_EXIST") {

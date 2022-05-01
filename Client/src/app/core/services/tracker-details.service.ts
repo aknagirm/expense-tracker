@@ -186,5 +186,6 @@ export class TrackerDetailsService {
     //  form.controls.transAmount.setValue('0');
     form.controls.transDate.setValue(new Date());
     form.markAsPristine();
+    form.markAsUntouched();
   }
 }

@@ -97,10 +97,10 @@ export class AuthService {
     return this.userDetails.asObservable();
   }
 
-  mailOtpGenerate(email: string) {
+  mailOtpGenerate(emailId: string) {
     return this.http.post(
       `${this.environment.baseUrl}${this.environment.servlet_endpoint.mailOtpGenerator}`,
-      { email }
+      { emailId }
     );
   }
 }
